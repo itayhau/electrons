@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <!-- <h1>Hello World!</h1> -->
+    <h1>Video Info</h1>
+    <form>
+        <div>
+            <label>Select a video</label>
+            <input type="file" accept="video/*">
+        </div>
+        <button type="submit">Get Info</button>
+    </form>
+    <div id="result">
+
+    </div>
+</body>
+<script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+    const jq = require('jquery')
+    const $ = jq;
+    //import $ from 'jquery';
+    //window.jQuery = window.$ = $;
+
+    $("form").on('submit', (event) => {
+        event.preventDefault();
+
+        // choose a file, then in the debugger explore the content of file input
+        // $("input")[0].files[0].path
+        // debugger;
+
+        const path = $("input")[0].files[0].path
+        console.log(path)
+
+        ipcRenderer.send('video:submit', path);
+    });
+
+    ipcRenderer.on('video:metadata', (event, result) => {
+        $("#result")[0].innerHTML = result
+    });
+</script>
+</html>
