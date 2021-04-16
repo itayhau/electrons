@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+    <form>
+        <div>
+            <label>Enter your todo: </label>
+            <input autofocus />
+        </div>
+        <button type="submit">Add</button>
+    </form>    
+</body>
+<script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+    const jq = require('jquery')
+    const $ = jq;
+    //import $ from 'jquery';
+    //window.jQuery = window.$ = $;
+
+    $("form").on('submit', (event) => {
+        event.preventDefault();
+
+        // choose a file, then in the debugger explore the content of file input
+        // $("input")[0].files[0].path
+        // debugger;
+
+        const { value } = $("input")[0];
+        console.log(value)
+
+        ipcRenderer.send('todo:add', value);
+    });
+
+    //ipcRenderer.on('video:metadata', (event, result) => {
+        //$("#result")[0].innerHTML = result
+    //});
+</script>
+</html>
